@@ -1,17 +1,23 @@
-
+from cgitb import text
+from math import ceil
 from tkinter import *
+from turtle import width
 
 # Frame
 
 root = Tk()  
   
-root.geometry("550x400")  
+root.geometry("750x400")  
 root.title("OI")
 
 # Global Variables
 
-balanceLabel = Label(root)
+budgetLabel = Label(root)
 moneyLabel = Label(root)
+budgetRestriction = Label(root)
+taxLabel = Label(root)
+moneywithtaxLabel = Label(root)
+balanceLabel = Label(root)
 
 # Frame Options
 
@@ -46,19 +52,55 @@ dayL.grid(row=2, column=3, padx=20, pady=20)
 dayE = Entry(root, width=3)
 dayE.grid(row=2, column=4)
 
+taxL = Label(root, text="Tax")
+taxL.grid(row=3, column=0)
+taxE = Entry(root)
+taxE.grid(row=3, column=1)
+taxSign = Label(root, text="€")
+taxSign.grid(row=3, column=2)
+
+savingsL = Label(root, text="Percentage of savings")
+savingsL.grid(row=3, column=3, padx=20)
+savingsE = Entry(root, width=3)
+savingsE.grid(row=3, column=4)
+
 def solver():
 
-    global balanceLabel, moneyLabel
-    balanceLabel.destroy()
+    global budgetLabel, moneyLabel, budgetRestriction, taxLabel, moneywithtaxLabel, balanceLabel
+    budgetLabel.destroy()
     moneyLabel.destroy()
-    balanceResult = int(budgetE.get())-(int(appCostE.get())*int(appNumberE.get()))
-    balanceLabel = Label(root, text="Balance left: %d €" % balanceResult)
-    balanceLabel.grid(row=4, column=0, columnspan=3)
+    budgetRestriction.destroy()
+    taxLabel.destroy()
+    moneywithtaxLabel.destroy()
+    balanceLabel.destroy()
+    if (int(budgetE.get()) < 0):
+        budgetRestriction = Label(root, text="Budget can't be less than 0 or a string")
+        budgetRestriction.grid(row=0, column=3)
+    budgetResult = int(budgetE.get())-(int(appCostE.get())*int(appNumberE.get()))
+    budgetLabel = Label(root, text="Budget left: %d €" % budgetResult)
+    budgetLabel.grid(row=5, column=0, columnspan=3)
     moneyResult = int(rentE.get())*int(dayE.get())*int(appNumberE.get())
     moneyLabel = Label(root, text="Money earned: %d €" % moneyResult)
-    moneyLabel.grid(row=5, column=0, columnspan=3)
+    moneyLabel.grid(row=6, column=0, columnspan=3)
+    taxResult = (int(taxE.get())/100)*int(moneyResult)
+    taxLabel = Label(root, text="Tax from earnings: %d €" % taxResult)
+    taxLabel.grid(row=7, column=0, columnspan=3)
+    moneywithtaxResult = moneyResult - taxResult
+    moneywithtaxLabel = Label(root, text="Money with tax subtracted: %d €" % moneywithtaxResult)
+    moneywithtaxLabel.grid(row=8, column=0, columnspan=3)
+    moneySavingsResult = (int(savingsE.get())/100)*moneywithtaxResult
+    balanceLabel = Label(root, text="Balance left: %d €" % moneySavingsResult)
+    balanceLabel.grid(row=9, column=0, columnspan=3)
+    balanceInvestedResult = moneywithtaxResult - moneySavingsResult
+    numberOfYears = int(budgetE.get()) / balanceInvestedResult
+    numberOfYearsLabel = Label(root, text="Number of years to return the budget invested: %d " % ceil(numberOfYears))
+    numberOfYearsLabel.grid(row=10, column=0, columnspan=3)
+
+
+
+
     
 sbmitbtn = Button(root, text = "Submit", command=solver) 
-sbmitbtn.grid(row=3, column=2)
+sbmitbtn.grid(row=4, column=2, pady="20")
 
 root.mainloop()  
