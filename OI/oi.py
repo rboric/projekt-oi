@@ -64,6 +64,8 @@ savingsL.grid(row=3, column=3, padx=20)
 savingsE = Entry(root, width=3)
 savingsE.grid(row=3, column=4)
 
+# Solver
+
 def solver():
 
     global budgetLabel, moneyLabel, budgetRestriction, taxLabel, moneywithtaxLabel, balanceLabel
