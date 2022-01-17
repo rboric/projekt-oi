@@ -101,7 +101,7 @@ def solver():
     balanceInvestedResult = moneywithtaxResult - moneySavingsResult
     numberOfYears = int(budgetE.get()) / balanceInvestedResult
 
-    if (int(budgetE.get()) < 0 or str(budgetE.get()) == True):
+    if (int(budgetE.get()) < 0):
         budgetRestriction = Label(root, text="Budget can't be less than 0", fg='#ff1717')
         budgetRestriction.place(x=20, y=0)
         budgetResult = 0
