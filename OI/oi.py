@@ -14,10 +14,18 @@ root.title("OI")
 
 budgetLabel = Label(root)
 moneyLabel = Label(root)
-budgetRestriction = Label(root)
 taxLabel = Label(root)
 moneywithtaxLabel = Label(root)
 balanceLabel = Label(root)
+numberOfYearsLabel = Label(root)
+budgetRestriction = Label(root)
+appCostRestriction = Label(root)
+appNumberRestriction = Label(root)
+rentRestriction = Label(root)
+dayRestriction = Label(root)
+taxRestriction = Label(root)
+savingsRestriction = Label(root)
+
 
 # Frame Options
 
@@ -68,40 +76,115 @@ savingsE.grid(row=3, column=4)
 
 def solver():
 
-    global budgetLabel, moneyLabel, budgetRestriction, taxLabel, moneywithtaxLabel, balanceLabel
+    global budgetLabel, moneyLabel, taxLabel, moneywithtaxLabel, balanceLabel, numberOfYearsLabel
+    global budgetRestriction, appCostRestriction, appNumberRestriction, rentRestriction, dayRestriction, taxRestriction, savingsRestriction
+    
     budgetLabel.destroy()
     moneyLabel.destroy()
-    budgetRestriction.destroy()
     taxLabel.destroy()
     moneywithtaxLabel.destroy()
     balanceLabel.destroy()
-    if (int(budgetE.get()) < 0):
-        budgetRestriction = Label(root, text="Budget can't be less than 0 or a string")
-        budgetRestriction.grid(row=0, column=3)
+    numberOfYearsLabel.destroy()
+    budgetRestriction.destroy()
+    appCostRestriction.destroy()
+    appNumberRestriction.destroy()
+    rentRestriction.destroy()
+    dayRestriction.destroy()
+    taxRestriction.destroy()
+    savingsRestriction.destroy()
+
     budgetResult = int(budgetE.get())-(int(appCostE.get())*int(appNumberE.get()))
-    budgetLabel = Label(root, text="Budget left: %d €" % budgetResult)
-    budgetLabel.grid(row=5, column=0, columnspan=3)
     moneyResult = int(rentE.get())*int(dayE.get())*int(appNumberE.get())
-    moneyLabel = Label(root, text="Money earned: %d €" % moneyResult)
-    moneyLabel.grid(row=6, column=0, columnspan=3)
     taxResult = (int(taxE.get())/100)*int(moneyResult)
-    taxLabel = Label(root, text="Tax from earnings: %d €" % taxResult)
-    taxLabel.grid(row=7, column=0, columnspan=3)
     moneywithtaxResult = moneyResult - taxResult
-    moneywithtaxLabel = Label(root, text="Money with tax subtracted: %d €" % moneywithtaxResult)
-    moneywithtaxLabel.grid(row=8, column=0, columnspan=3)
     moneySavingsResult = (int(savingsE.get())/100)*moneywithtaxResult
-    balanceLabel = Label(root, text="Balance left: %d €" % moneySavingsResult)
-    balanceLabel.grid(row=9, column=0, columnspan=3)
     balanceInvestedResult = moneywithtaxResult - moneySavingsResult
     numberOfYears = int(budgetE.get()) / balanceInvestedResult
+
+    if (int(budgetE.get()) < 0 or str(budgetE.get()) == True):
+        budgetRestriction = Label(root, text="Budget can't be less than 0", fg='#ff1717')
+        budgetRestriction.place(x=20, y=0)
+        budgetResult = 0
+        moneyResult = 0
+        taxResult = 0
+        moneywithtaxResult = 0
+        moneySavingsResult = 0
+        balanceInvestedResult = 0
+        numberOfYears = 0
+    if (int(appCostE.get()) < 0):
+        appCostRestriction = Label(root, text="Apartment cost can't be less than 0", fg='#ff1717')
+        appCostRestriction.place(x=20, y=40)
+        budgetResult = 0
+        moneyResult = 0
+        taxResult = 0
+        moneywithtaxResult = 0
+        moneySavingsResult = 0
+        balanceInvestedResult = 0
+        numberOfYears = 0
+    if (int(appNumberE.get()) < 0):
+        appNumberRestriction = Label(root, text="Apartment number can't be less than 0", fg='#ff1717')
+        appNumberRestriction.place(x=300, y=40)
+        budgetResult = 0
+        moneyResult = 0
+        taxResult = 0
+        moneywithtaxResult = 0
+        moneySavingsResult = 0
+        balanceInvestedResult = 0
+        numberOfYears = 0
+    if (int(rentE.get()) <= 0):
+        rentRestriction = Label(root, text="Rent can't be less than or equal to 0", fg='#ff1717')
+        rentRestriction.place(x=20, y=80)
+        budgetResult = 0
+        moneyResult = 0
+        taxResult = 0
+        moneywithtaxResult = 0
+        moneySavingsResult = 0
+        balanceInvestedResult = 0
+        numberOfYears = 0
+    if (int(dayE.get()) <= 0 or int(dayE.get()) > 365 ):
+        dayRestriction = Label(root, text="Days can't be less than or equal to 0 or more than 365", fg='#ff1717')
+        dayRestriction.place(x=300, y=80)
+        budgetResult = 0
+        moneyResult = 0
+        taxResult = 0
+        moneywithtaxResult = 0
+        moneySavingsResult = 0
+        balanceInvestedResult = 0
+        numberOfYears = 0
+    if (int(taxE.get()) < 0 or int(taxE.get()) > 100):
+        taxRestriction = Label(root, text="Tax can't be less than 0 or more than 100", fg='#ff1717')
+        taxRestriction.place(x=20, y=120)
+        budgetResult = 0
+        moneyResult = 0
+        taxResult = 0
+        moneywithtaxResult = 0
+        moneySavingsResult = 0
+        balanceInvestedResult = 0
+        numberOfYears = 0
+    if (int(savingsE.get()) < 0 or int(savingsE.get()) > 100):
+        savingsRestriction = Label(root, text="Savings can't be less than 0 or more than 100", fg='#ff1717')
+        savingsRestriction.place(x=300, y=120)
+        budgetResult = 0
+        moneyResult = 0
+        taxResult = 0
+        moneywithtaxResult = 0
+        moneySavingsResult = 0
+        balanceInvestedResult = 0
+        numberOfYears = 0
+
+    budgetLabel = Label(root, text="Budget left: %d €" % budgetResult)
+    budgetLabel.grid(row=5, column=0, columnspan=3)
+    moneyLabel = Label(root, text="Money earned: %d €" % moneyResult)
+    moneyLabel.grid(row=6, column=0, columnspan=3)
+    taxLabel = Label(root, text="Tax from earnings: %d €" % taxResult)
+    taxLabel.grid(row=7, column=0, columnspan=3)
+    moneywithtaxLabel = Label(root, text="Money with tax subtracted: %d €" % moneywithtaxResult)
+    moneywithtaxLabel.grid(row=8, column=0, columnspan=3)
+    balanceLabel = Label(root, text="Balance left: %d €" % moneySavingsResult)
+    balanceLabel.grid(row=9, column=0, columnspan=3)
     numberOfYearsLabel = Label(root, text="Number of years to return the budget invested: %d " % ceil(numberOfYears))
     numberOfYearsLabel.grid(row=10, column=0, columnspan=3)
 
-
-
-
-    
 sbmitbtn = Button(root, text = "Submit", command=solver) 
 sbmitbtn.grid(row=4, column=2, pady="20")
 
